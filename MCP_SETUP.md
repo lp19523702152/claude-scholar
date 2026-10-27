@@ -275,6 +275,48 @@ verify paper metadata and citations through the normal Zotero workflow. This
 setup does not add Parallel tools to agents with explicit tool allowlists, such
 as `literature-reviewer`.
 
+### 5. Serply MCP (Optional)
+
+Use the [Serply MCP server](https://serply.io/mcp) for Google Scholar, Google
+web and Google News search in the main Claude Code conversation, such as
+finding related work outside your Zotero library or checking a paper's citation
+count. It needs a Serply API key from [serply.io](https://serply.io); new
+accounts get trial credits.
+
+#### Claude Code
+
+Add the server to your user configuration, replacing `your-api-key`:
+
+```bash
+claude mcp add --transport http --scope user serply https://api.serply.io/mcp \
+  --header "X-Api-Key: your-api-key" \
+  --header "User-Agent: claude-scholar"
+claude mcp get serply
+```
+
+Restart Claude Code, then run `/mcp` and check that `serply` is connected and
+exposes `google_scholar_search`, `google_search`, `google_news_search` and
+`scrape_url`. To remove it, run:
+
+```bash
+claude mcp remove serply --scope user
+```
+
+#### Research example
+
+In the main conversation, try:
+
+```text
+Use serply's google_scholar_search to find the most cited papers on
+speculative decoding for large language models. List five with their
+citation counts and links. Do not modify my Zotero library.
+```
+
+Scholar results carry titles, authors, venues, links and citation counts.
+Import any paper you keep through the normal Zotero workflow so its metadata is
+verified. Like the Parallel setup, this does not add Serply tools to agents with
+explicit tool allowlists, such as `literature-reviewer`.
+
 ## Verification
 
 After configuration, restart your CLI and verify MCP servers are connected:
